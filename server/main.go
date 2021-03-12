@@ -12,14 +12,14 @@ import (
 )
 
 const (
-	PORT = ":33333" //may need this in shared folder with client
+	PORT = ":55555" //may need this in shared folder with client
 )
 
 var (
 	validPath = regexp.MustCompile("^/command/(\\d+)?$")
 
 	// Ideally this would be in a database rather than memory
-	runLog = make(map[int]Job)
+	runLog = make(map[int]*Job)
 
 	counter = SafeCounter{id: 0}
 )
@@ -62,7 +62,7 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		id := counter.Increment()
-		job := Job{id: id, log: ""}
+		job := &Job{id: id, log: ""}
 		runLog[id] = job
 
 		job.Start(path, p.Args)
