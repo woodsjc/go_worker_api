@@ -13,6 +13,8 @@ import (
 
 const (
 	PORT = ":55555" //may need this in shared folder with client
+	user = "user"
+	pass = "user"
 )
 
 var (
@@ -43,6 +45,11 @@ type Post struct {
 	Args string
 }
 
+type GetResponse struct {
+	Id  int
+	Log string
+}
+
 func commandHandler(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var p Post
@@ -66,7 +73,7 @@ func commandHandler(w http.ResponseWriter, r *http.Request) {
 		runLog[id] = job
 
 		job.Start(path, p.Args)
-		fmt.Fprintf(w, "{id:%d}", id)
+		fmt.Fprintf(w, "{\"id\":%d}", id)
 		log.Printf("DEBUG::: runLog - %v", runLog)
 		return
 	case "GET":
@@ -107,7 +114,14 @@ func idHandler(w http.ResponseWriter, r *http.Request) {
 	//May come back and encode as json, so things like quotes work in log
 	switch r.Method {
 	case "GET":
-		fmt.Fprintf(w, "{\"log\":\"%s\"}", job.log)
+		getResponse := GetResponse{id, job.log}
+		data, err := json.Marshal(getResponse)
+		if err != nil {
+			log.Printf("Unable to encode job.log as json %v", getResponse)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.Write(data)
 		return
 	case "DELETE":
 		fmt.Fprintf(w, "{\"success\":%t}", job.Kill())
@@ -121,6 +135,18 @@ func idHandler(w http.ResponseWriter, r *http.Request) {
 
 func routeHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Request from %v: %v", r.Header.Get("X-Forwarded-For"), r.URL.Path)
+	u, p, ok := r.BasicAuth()
+	if !ok {
+		log.Printf("Not using basic auth.")
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if u != user || p != pass {
+		log.Printf("Invalid credentials for %v", u)
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
 
 	if r.URL.Path == "/command/" {
 		commandHandler(w, r)

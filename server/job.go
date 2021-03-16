@@ -45,7 +45,12 @@ func (j Job) Status() string {
 
 //Should this be run as goroutine
 func (j *Job) Start(path string, args string) {
-	cmd := exec.Command(path, args)
+	var cmd *exec.Cmd
+	if len(args) > 0 {
+		cmd = exec.Command(path, args)
+	} else {
+		cmd = exec.Command(path)
+	}
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
