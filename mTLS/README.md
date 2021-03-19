@@ -13,7 +13,7 @@ Finally working with curl
 Post example:
 ```
 curl -X POST "https://localhost:55555/command/" --cacert ../keys/ca-chain.cert.pem --cert ../keys/client.signed.cert.pem --key ../keys/client.pem -d '{"Name":"ls","Args":"-al"}'m --cert ../keys/client.signed.cert.pem --key ../keys/client.pem -d '{"Name":"ls","Args":"-al"}'
-``
+```
 
 ## [client](client) - TODO
 
