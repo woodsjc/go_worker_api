@@ -1,2 +1,8 @@
-server/server
-client/client
+*/server/server
+*/client/client
+basic_auth/server/test.sh
+*.pem
+*.old
+*.txt
+*.attr
+mTLS/keys/serial
