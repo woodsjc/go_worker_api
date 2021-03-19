@@ -40,8 +40,8 @@ type GetResponse struct {
 	Log string
 }
 
-func basicAuth(r *http.Request) {
-	r.SetBasicAuth(USER, PASS)
+func setRequestHeaders(r *http.Request) {
+	//r.SetBasicAuth(USER, PASS)
 	r.Header.Set("Accept", "application/json")
 	r.Header.Set("Content-Type", "application/json")
 }
@@ -59,7 +59,7 @@ func (c *Cli) postJob(job string, args string) {
 		return
 	}
 
-	basicAuth(request)
+	setRequestHeaders(request)
 	response, err := c.Do(request)
 	if err != nil {
 		log.Println(err)
@@ -80,7 +80,7 @@ func (c *Cli) getJob(id int) {
 		return
 	}
 
-	basicAuth(request)
+	setRequestHeaders(request)
 	response, err := c.Do(request)
 	if err != nil {
 		log.Println(err)
@@ -99,7 +99,7 @@ func (c *Cli) getJob(id int) {
 	}
 }
 
-func main() {
+func mTLSAuth() *Cli {
 	cert, err := tls.LoadX509KeyPair(CLIENT_PUBLIC_KEY, CLIENT_PRIVATE_KEY)
 	if err != nil {
 		log.Fatal(err)
@@ -117,9 +117,21 @@ func main() {
 			TLSClientConfig: &tls.Config{
 				RootCAs:      caCertPool,
 				Certificates: []tls.Certificate{cert},
+				MinVersion:   tls.VersionTLS13,
 			},
 		},
 	}}
+	return cli
+}
+
+func main() {
+	cli := mTLSAuth()
+
+	r, err := cli.Get(URL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response from %v: %v", URL, r)
 
 	cli.postJob("ls", "-ax")
 	cli.postJob("env", "")

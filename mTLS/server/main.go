@@ -46,17 +46,17 @@ func (c *SafeCounter) Increment() int {
 
 func addMTLS(server *http.Server) {
 	//using self signed certs
-	clientCert, err := ioutil.ReadFile(CA_CHAIN) //CLIENT_PUBLIC_CERT)
+	caChain, err := ioutil.ReadFile(CA_CHAIN) //CLIENT_PUBLIC_CERT)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	clientCertPool := x509.NewCertPool()
-	clientCertPool.AppendCertsFromPEM(clientCert)
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(caChain)
 
 	tlsConfig := &tls.Config{
 		ClientAuth:               tls.RequireAndVerifyClientCert,
-		ClientCAs:                clientCertPool,
+		ClientCAs:                caCertPool,
 		PreferServerCipherSuites: true,
 		MinVersion:               tls.VersionTLS13,
 	}
@@ -71,10 +71,5 @@ func main() {
 	addMTLS(server)
 
 	http.HandleFunc("/command/", routeHandler)
-	//log.Fatal(http.ListenAndServe(PORT, nil))
-
-	err := server.ListenAndServeTLS(SERVER_PUBLIC_KEY, SERVER_PRIVATE_KEY)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(server.ListenAndServeTLS(SERVER_PUBLIC_KEY, SERVER_PRIVATE_KEY))
 }

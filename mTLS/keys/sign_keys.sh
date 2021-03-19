@@ -3,7 +3,8 @@
 if [ ! -f intermediate.signed.cert.pem ]; then
     openssl req -new -sha256 -key intermediate.pem \
         -subj "/C=US/ST=TN/L=Nashville/O=FakeOrg/CN=localhost" \
-        -addext "subjectAltName = DNS:localhost" \
+        -addext "subjectAltName = DNS:localhost, DNS:127.0.0.1, DNS:::1" \
+        -addext "certificatePolicies = 1.2.3.4" \
         -out intermediate.request_sign.pem
 
     if [ $? -ne 0 ]; then
@@ -35,7 +36,8 @@ do
     if [ ! -f "$NAME.signed.cert.pem" ]; then
         openssl req -new -sha256 -key "$NAME.pem" \
             -subj "/C=US/ST=TN/L=Nashville/O=FakeOrg/CN=localhost" \
-            -addext "subjectAltName = DNS:localhost" \
+            -addext "subjectAltName = DNS:localhost, DNS:127.0.0.1, DNS:::1" \
+            -addext "certificatePolicies = 1.2.3.4" \
             -out $NAME.request_sign.pem
         
         if [ $? -ne 0 ]; then
