@@ -4,10 +4,11 @@ Starts a process and then can query log and/or status
 
 ## Server
 
+Done
+* [basic auth](basic_auth)
+
 TODO
-* tests 
-* basic auth
-* mtls
+* [mTLS](mTLS)
 * rpc
 
 ## Client

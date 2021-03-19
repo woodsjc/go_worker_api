@@ -6,4 +6,4 @@
 ./server
 ```
 
-without building just use ```go run main.go jobs.go```
+without building just use `go run main.go jobs.go`
