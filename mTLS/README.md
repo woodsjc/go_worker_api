@@ -8,13 +8,13 @@ Ton going on here because have to create a certificate authority. Then make an i
 
 ## [server](server)
 
-Finally working with curl 
+Finally working with curl and client
 
 Post example:
 ```
 curl -X POST "https://localhost:55555/command/" --cacert ../keys/ca-chain.cert.pem --cert ../keys/client.signed.cert.pem --key ../keys/client.pem -d '{"Name":"ls","Args":"-al"}'m --cert ../keys/client.signed.cert.pem --key ../keys/client.pem -d '{"Name":"ls","Args":"-al"}'
 ```
 
-## [client](client) - TODO
+## [client](client) 
 
-Think some lingering basic auth still causing issues
+Run client after server

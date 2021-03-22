@@ -6,9 +6,9 @@ Starts a process and then can query log and/or status
 
 Done
 * [basic auth](basic_auth)
+* [mTLS](mTLS)
 
 TODO
-* [mTLS](mTLS)
 * rpc
 
 ## Client
