@@ -1,6 +1,6 @@
 # Client for worker api with mTLS
 
-TODO --- get working with tls
+Now working self signed certs. 
 
 ## Building
 

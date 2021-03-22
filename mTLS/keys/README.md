@@ -1,12 +1,8 @@
 # keys
 
-Need setup
+Modify - `dir=` line on both config files to current path
 * intermediate\_openssl.cnf
 * openssl.cnf
-
-## TODO
-
-those 2 config files need a bit more love. Currently not using SANs and causing go client errors. However works in curl. Need to add sections for SubjectAlternativeName
 
 # Running
 
