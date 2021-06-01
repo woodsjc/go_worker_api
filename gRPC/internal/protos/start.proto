@@ -1,0 +1,15 @@
+syntax = "proto3";
+package worker;
+
+service StartService {
+    rpc Start(StartRequest) returns (StartResponse) {}
+}
+
+message StartRequest {
+    string name = 1;
+    string args = 2;
+}
+
+message StartResponse {
+    int64 id = 1;
+}

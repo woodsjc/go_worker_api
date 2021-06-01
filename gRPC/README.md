@@ -11,15 +11,10 @@ Ton going on here because have to create a certificate authority. Then make an i
 Finally working with curl and client
 
 Post example:
-
-```sh
-curl -X POST "https://localhost:55555/command/" \
-    --cacert ../keys/ca-chain.cert.pem \
-    --cert ../keys/client.signed.cert.pem \
-    --key ../keys/client.pem \
-    -d '{"Name":"ls","Args":"-al"}'
+```
+curl -X POST "https://localhost:55555/command" --cacert ../keys/ca-chain.cert.pem --cert ../keys/client.signed.cert.pem --key ../keys/client.pem -d '{"Name":"ls","Args":"-al"}'m --cert ../keys/client.signed.cert.pem --key ../keys/client.pem -d '{"Name":"ls","Args":"-al"}'
 ```
 
-## [client](client)
+## [client](client) 
 
 Run client after server
